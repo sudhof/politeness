@@ -1,17 +1,56 @@
 
+import sys
 import os
 import cPickle
-import numpy as np
-
-from sklearn import svm
-from scipy.sparse import csr_matrix
-
-from features.vectorizer import PolitenessFeatureVectorizer
 
 """
 This file provides an interface to 
 a pre-trained politeness SVM. 
 """
+
+#####
+# Ensure the proper python dependencies exist
+
+try:
+    import numpy as np
+except:
+    sys.stderr.write("Package not found: Politeness model requires python package numpy\n")
+    sys.exit(2)
+
+try:
+    import scipy
+    from scipy.sparse import csr_matrix
+except:
+    sys.stderr.write("Package not found: Politeness model requires python package scipy\n")
+    sys.exit(2)
+
+try:
+    import sklearn
+except:
+    sys.stderr.write("Package not found: Politeness model requires python package scikit-learn\n")
+    sys.exit(2)
+
+try:
+    import nltk
+except:
+    sys.stderr.write("Package not found: Politeness model requires python package nltk\n")
+    sys.exit(2)
+
+####
+# Check versions for sklearn, scipy, numpy, nltk
+# Don't error out, just notify
+
+packages2versions = [("scikit-learn", sklearn, "0.15.1"), ("numpy", np, "1.9.0"), ("nltk", nltk, "3.0.0"), ("scipy", scipy, "0.12.0")]
+
+for name, package, version in packages2versions:
+    if package.__version__[:3] != version:
+        sys.stderr.write("Warning: %s version != %s. Code functionality not guaranteed.\n" % (name, version))
+
+
+####
+
+from features.vectorizer import PolitenessFeatureVectorizer
+
 
 ####
 # Serialized model filename
