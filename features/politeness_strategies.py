@@ -150,6 +150,9 @@ has_negative.__name__ = "HASNEGATIVE"
 ####
 # strategy_fnc application helper
 
+# For debugging, prints exceptions
+VERBOSE_ERRORS = False
+
 def check_elems_for_strategy(elems, strategy_fnc):
     # given a strategy lambda function, 
     # see if strategy present in at least one elem
@@ -159,8 +162,9 @@ def check_elems_for_strategy(elems, strategy_fnc):
             if testres:
                 return True
         except Exception, e:
-            print strategy_fnc.__name__
-            print e, elem
+            if VERBOSE_ERRORS:
+                print strategy_fnc.__name__
+                print e, elem
     return False
 
 
