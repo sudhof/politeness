@@ -38,7 +38,27 @@ NOTE: If you use this API in your work please send an email to cristiand@cs.stan
 **Caveat:** This work focuses on requests, not all kinds of utterances. The model's predictions on non-request utterances will be less accurate. As a bonus, our code also includes a very simple heuristic to check whether a document looks like a request (see politeness.request_utils).
 
 
-**Requirements:** scikit-learn, scipy, numpy, nltk
+**Requirements:** 
+
+python package requirements are listed in requirements.txt. We recommend setting up a new python environment using virtualenv and installing the dependencies by running
+
+    pip install -r requirements.txt
+
+Additionally, since the code uses nltk.word_tokenize to tokenize text, you will need to download the  tokenizers/punkt/english.pickle nltk resource. If you've worked with nltk before, there's a good chance you've already downloaded this model. Otherwise, open the python interpreter and run:
+
+    import nltk
+    nltk.download()
+
+In the window that opens, navigate to Models and download the Punkt Tokenizer Models.
+
+
+**Sanity Check:**
+
+To make sure everything's working, navigate to the code directory and run
+
+    python model.py
+
+This should print out the politeness probabilities for 4 test documents.
 
 
 **Contact:** Please email any questions to: cristiand@cs.stanford.edu (Cristian Danescu-Niculescu-Mizil) and sudhof@stanford.edu (Moritz Sudhof)

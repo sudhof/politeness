@@ -46,29 +46,29 @@ TEST_DOCUMENTS = [
     # Impolite requests
     # Req 3
     {
-        "text": "Ugh, possibly the ugliest Python code I've ever seen. What are you doing?", 
+        "text": "What are you trying to do?  Why can't you just store the \"Range\"?",
         "sentences": [
-            "Ugh, possibly the ugliest Python code I've ever seen.", 
-            "What are you doing?"
+            "What are you trying to do?",
+            "Why can't you just store the 'Range'?"
         ],
         "parses": [
-            ["nsubj(seen-11, Ugh-1)", "advmod(ugliest-5, possibly-3)", "det(ugliest-5, the-4)", "dep(seen-11, ugliest-5)", "nn(code-7, Python-6)", "dep(ugliest-5, code-7)", "nsubj(seen-11, I-8)", "aux(seen-11, \'ve-9)", "advmod(seen-11, ever-10)", "root(ROOT-0, seen-11)"], 
-            ["dobj(doing-4, What-1)", "aux(doing-4, are-2)", "nsubj(doing-4, you-3)", "root(ROOT-0, doing-4)"]
+            ["dep(trying-4, What-1)", "aux(trying-4, are-2)", "nsubj(trying-4, you-3)", "xsubj(do-6, you-3)", "root(ROOT-0, trying-4)", "aux(do-6, to-5)", "xcomp(trying-4, do-6)"],
+            ["advmod(ca-2, Why-1)", "advcl(store-6, ca-2)", "neg(ca-2, n't-3)", "nsubj(store-6, you-4)", "advmod(store-6, just-5)", "root(ROOT-0, store-6)", "det(Range-9, the-7)", "dobj(store-6, Range-9)"]
         ],
         "score": -0.7
     },
     # Req 4
     {
-        "text": "My answer would be: What kind of lame ass product searches for palindromes in a string. May I take a closer look at your business plan, please?", 
+        "text": "This was supposed to have been moved to &lt;url&gt; per the cfd. why wasn't it moved?",
         "sentences": [
-            "My answer would be: What kind of lame ass product searches for palindromes in a string.", 
-            "May I take a closer look at your business plan, please?"
+            "this was supposed to have been moved to &lt;url&gt; per the cfd.",
+            "why wasn't it moved?"
         ],
         "parses": [
-            ["poss(answer-2, My-1)", "nsubj(be-4, answer-2)", "aux(be-4, would-3)", "dep(kind-7, be-4)", "det(kind-7, What-6)", "root(ROOT-0, kind-7)", "dep(kind-7, of-8)", "amod(searches-12, lame-9)", "nn(searches-12, ass-10)", "nn(searches-12, product-11)", "pobj(of-8, searches-12)", "prep_for(searches-12, palindromes-14)", "det(string-17, a-16)", "prep_in(palindromes-14, string-17)"], 
-            ["tmod(take-3, May-1)", "nsubj(take-3, I-2)", "root(ROOT-0, take-3)", "det(look-6, a-4)", "amod(look-6, closer-5)", "dobj(take-3, look-6)", "poss(plan-10, your-8)", "nn(plan-10, business-9)", "prep_at(take-3, plan-10)", "dep(take-3, please-12)"]
+            ["nsubjpass(supposed-3, this-1)", "xsubj(moved-7, this-1)", "auxpass(supposed-3, was-2)", "root(ROOT-0, supposed-3)", "aux(moved-7, to-4)", "aux(moved-7, have-5)", "auxpass(moved-7, been-6)", "xcomp(supposed-3, moved-7)", "prep_to(moved-7, url-10)", "det(cfd-14, the-13)", "prep_per(url-10, cfd-14)"],
+            ["advmod(n't-3, why-1)", "cop(n't-3, was-2)", "root(ROOT-0, n't-3)", "nsubj(moved-5, it-4)", "dep(n't-3, moved-5)"]
         ],
-        "score": -0.8
+        "score": -0.9
     }
 ]
 
