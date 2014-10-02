@@ -42,9 +42,9 @@ except:
 
 packages2versions = [("scikit-learn", sklearn, "0.15.1"), ("numpy", np, "1.9.0"), ("nltk", nltk, "3.0.0"), ("scipy", scipy, "0.12.0")]
 
-for name, package, version in packages2versions:
-    if package.__version__[:3] != version:
-        sys.stderr.write("Warning: %s version != %s. Code functionality not guaranteed.\n" % (name, version))
+for name, package, expected_v in packages2versions:
+    if package.__version__ < expected_v:
+        sys.stderr.write("Warning: package '%s', expected version >= %s, detected %s. Code functionality not guaranteed.\n" % (name, expected_v, package.__version__))
 
 
 ####
