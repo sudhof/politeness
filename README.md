@@ -1,6 +1,6 @@
 Stanford Politeness API
 =======================
- Version 1.01 (released September 2014)
+ Version 1.01 (released October 2014)
 
 Python implementation of a politeness classifier for requests, based on the work described in:
 
