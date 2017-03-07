@@ -161,7 +161,7 @@ def check_elems_for_strategy(elems, strategy_fnc):
             testres = strategy_fnc(elem)
             if testres:
                 return True
-        except Exception, e:
+        except Exception as e:
             if VERBOSE_ERRORS:
                 print strategy_fnc.__name__
                 print e, elem
