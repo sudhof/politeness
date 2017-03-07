@@ -1,7 +1,7 @@
 
 import sys
 import os
-import cPickle
+import _pickle as cPickle
 
 """
 This file provides an interface to 
@@ -109,10 +109,10 @@ if __name__ == "__main__":
 
         probs = score(doc)
 
-        print "===================="
-        print "Text: ", doc['text']
-        print "\tP(polite) = %.3f" % probs['polite']
-        print "\tP(impolite) = %.3f" % probs['impolite']
-        print "\n"
+        print("====================")
+        print("Text: ", doc['text'])
+        print("\tP(polite) = %.3f" % probs['polite'])
+        print("\tP(impolite) = %.3f" % probs['impolite'])
+        print("\n")
 
 
