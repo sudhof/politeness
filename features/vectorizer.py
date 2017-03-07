@@ -1,6 +1,6 @@
 
 import os
-import cPickle
+import _pickle as cPickle
 import string
 import nltk
 from itertools import chain
@@ -130,10 +130,10 @@ if __name__ == "__main__":
         f = vectorizer.features(doc)
 
         # Print summary of features that are present
-        print "\n===================="
-        print "Text: ", doc['text']
-        print "\tUnigrams, Bigrams: %d" % len(filter(lambda x: f[x] > 0 and ("UNIGRAM_" in x or "BIGRAM_" in x), f.iterkeys()))
-        print "\tPoliteness Strategies: \n\t\t%s" % "\n\t\t".join(filter(lambda x: f[x] > 0 and "feature_politeness_" in x, f.iterkeys()))
-        print "\n"
+        print("\n====================")
+        print("Text: ", doc['text'])
+        print("\tUnigrams, Bigrams: %d" % len(filter(lambda x: f[x] > 0 and ("UNIGRAM_" in x or "BIGRAM_" in x), f.iterkeys())))
+        print("\tPoliteness Strategies: \n\t\t%s" % "\n\t\t".join(filter(lambda x: f[x] > 0 and "feature_politeness_" in x, f.iterkeys())))
+        print("\n")
 
 
