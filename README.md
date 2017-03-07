@@ -1,4 +1,4 @@
-Stanford Politeness API
+Stanford Politeness API (Ported to Python3)
 =======================
  Version 1.01 (released October 2014)
 
