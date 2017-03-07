@@ -163,8 +163,8 @@ def check_elems_for_strategy(elems, strategy_fnc):
                 return True
         except Exception as e:
             if VERBOSE_ERRORS:
-                print strategy_fnc.__name__
-                print e, elem
+                print(strategy_fnc.__name__)
+                print(e, elem)
     return False
 
 
