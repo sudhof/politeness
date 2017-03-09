@@ -1,6 +1,6 @@
 
 import random
-import cPickle
+import _pickle as cPickle
 import numpy as np
 
 from sklearn import svm
@@ -46,7 +46,7 @@ def train_svm(documents, ntesting=500):
     X, y = documents2feature_vectors(documents)
     Xtest, ytest = documents2feature_vectors(testing)
 
-    print "Fitting"
+    print("Fitting")
     clf = svm.SVC(C=0.02, kernel='linear', probability=True)
     clf.fit(X, y)
 
