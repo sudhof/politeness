@@ -1,4 +1,5 @@
 
+import codecs
 import os
 import re
 from itertools import chain
@@ -30,8 +31,8 @@ local_dir = os.path.split(__file__)[0]
 pos_filename = os.path.join(local_dir, "liu-positive-words.txt")
 neg_filename = os.path.join(local_dir, "liu-negative-words.txt")
 
-positive_words = set(map(lambda x: x.strip(), open(pos_filename).read().splitlines()))
-negative_words = set(map(lambda x: x.strip(), open(neg_filename).read().splitlines()))
+positive_words = set(map(lambda x: x.strip(), codecs.open(pos_filename, encoding='utf-8').read().splitlines()))
+negative_words = set(map(lambda x: x.strip(), codecs.open(neg_filename, encoding='utf-8').read().splitlines()))
 
 
 ####
