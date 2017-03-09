@@ -218,14 +218,14 @@ def get_politeness_strategy_features(document):
             feature_name: 1 or 0
         }
 
-    Currently return binary features- just checking for 
-    presence of a strategy. One could alternatively decide 
-    to count occurrences of the strategies. 
+    Currently return binary features- just checking for
+    presence of a strategy. One could alternatively decide
+    to count occurrences of the strategies.
     """
     if not document.get('sentences', False) or not document.get('parses', False):
         # Nothing here. Return all 0s
         return {f: 0 for f in POLITENESS_FEATURES}
-    
+
     features = {}
 
     # Parse-based features:

@@ -4,8 +4,8 @@ import os
 import _pickle as cPickle
 
 """
-This file provides an interface to 
-a pre-trained politeness SVM. 
+This file provides an interface to
+a pre-trained politeness SVM.
 """
 
 #####
@@ -40,7 +40,7 @@ except:
 # Check versions for sklearn, scipy, numpy, nltk
 # Don't error out, just notify
 
-packages2versions = [("scikit-learn", sklearn, "0.15.1"), ("numpy", np, "1.9.0"), ("nltk", nltk, "3.0.0"), ("scipy", scipy, "0.12.0")]
+packages2versions = [("scikit-learn", sklearn, "0.18.1"), ("numpy", np, "1.12.0"), ("nltk", nltk, "3.2.1"), ("scipy", scipy, "0.18.1")]
 
 for name, package, expected_v in packages2versions:
     if package.__version__ < expected_v:
@@ -49,7 +49,7 @@ for name, package, expected_v in packages2versions:
 
 ####
 
-from features.vectorizer import PolitenessFeatureVectorizer
+from . features.vectorizer import PolitenessFeatureVectorizer
 
 
 ####
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     Sample classification of requests
     """
 
-    from test_documents import TEST_DOCUMENTS
+    from . test_documents import TEST_DOCUMENTS
 
     for doc in TEST_DOCUMENTS:
 

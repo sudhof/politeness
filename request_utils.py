@@ -1,4 +1,4 @@
-from features.politeness_strategies import check_elems_for_strategy, initial_polar, aux_polar
+from . features.politeness_strategies import check_elems_for_strategy, initial_polar, aux_polar
 
 def check_is_request(document):
     """
@@ -19,7 +19,7 @@ def check_is_request(document):
     return False
 
 if __name__ == "__main__":
-    from test_documents import TEST_DOCUMENTS
+    from . test_documents import TEST_DOCUMENTS
 
     for doc in TEST_DOCUMENTS:
         print("\nText: ", doc['text'])

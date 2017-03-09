@@ -7,7 +7,7 @@ from sklearn import svm
 from scipy.sparse import csr_matrix
 from sklearn.metrics import classification_report
 
-from politeness.features.vectorizer import PolitenessFeatureVectorizer
+from ../.. politeness.features.vectorizer import PolitenessFeatureVectorizer
 
 """
 Sample script to train a politeness SVM

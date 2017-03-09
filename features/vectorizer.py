@@ -7,7 +7,7 @@ from itertools import chain
 from collections import defaultdict
 
 # local import
-from politeness_strategies import get_politeness_strategy_features
+from . politeness_strategies import get_politeness_strategy_features
 
 # Will need access to local dir
 # for support files
