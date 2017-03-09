@@ -60,7 +60,7 @@ MODEL_FILENAME = os.path.join(os.path.split(__file__)[0], 'politeness-svm.p')
 ####
 # Load model, initialize vectorizer
 
-clf = cPickle.load(open(MODEL_FILENAME))
+clf = cPickle.load(open(MODEL_FILENAME, 'rb'), encoding='latin1', fix_imports=True)
 vectorizer = PolitenessFeatureVectorizer()
 
 def score(request):
