@@ -47,8 +47,8 @@ class PolitenessFeatureVectorizer:
         These lists can be generated using the training set
         and PolitenessFeatureVectorizer.generate_bow_features
         """
-        self.unigrams = cPickle.load(open(self.UNIGRAMS_FILENAME))
-        self.bigrams = cPickle.load(open(self.BIGRAMS_FILENAME))
+        self.unigrams = cPickle.load(open(self.UNIGRAMS_FILENAME, 'rb'), encoding='latin1', fix_imports=True)
+        self.bigrams = cPickle.load(open(self.BIGRAMS_FILENAME, 'rb'), encoding='latin1', fix_imports=True)
 
 
     def features(self, document):
