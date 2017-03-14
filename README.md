@@ -16,11 +16,11 @@ NOTE: If you use this API in your work please send an email to cristian@cs.corne
 
 **Further resources:**
 
-    Info about our work: http://www.cs.cornell.edu/~cristian/Politeness.html
+    Info about our work: http://cs.cornell.edu/~cristian/Politeness.html
 
     A web interface to the politeness model: http://politeness.cornell.edu/
 
-    The Stanford Politeness Corpus: http://www.cs.cornell.edu/~cristian/Politeness_files/Stanford_politeness_corpus.zip
+    The Stanford Politeness Corpus: http://cs.cornell.edu/~cristian/Politeness_files/Stanford_politeness_corpus.zip
 
 
 **Using this API you can:**
