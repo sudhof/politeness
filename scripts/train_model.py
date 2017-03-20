@@ -2,12 +2,14 @@
 import random
 import _pickle as cPickle
 import numpy as np
+import json
 
 from sklearn import svm
 from scipy.sparse import csr_matrix
 from sklearn.metrics import classification_report
 
 from ../.. politeness.features.vectorizer import PolitenessFeatureVectorizer
+from ../.. politeness.corpora import PARSED_STACK_EXCHANGE, PARSED_WIKIPEDIA
 
 """
 Sample script to train a politeness SVM
@@ -83,8 +85,13 @@ if __name__ == "__main__":
     """
     Train a dummy model off our 4 sample request docs
     """
+    stack_docs = json.loads(open(PARSED_STACK_EXCHANGE, 'r').read())
+    wiki_docs = json.loads(open(PARSED_WIKIPEDIA, 'r').read())
+    all_docs = stack_docs + wiki_docs
 
-    from test_documents import TEST_DOCUMENTS
+    FITTED_SVC = train_svm(all_docs, ntesting=500)
+    cPickle.dump(FITTED_SVC, open("politeness-svm.p", 'w'))
+#    from test_documents import TEST_DOCUMENTS
 
-    train_svm(TEST_DOCUMENTS, ntesting=1)
+#    train_svm(TEST_DOCUMENTS, ntesting=1)
 
