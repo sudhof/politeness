@@ -49,8 +49,14 @@ for name, package, expected_v in packages2versions:
 
 ####
 
-from . features.vectorizer import PolitenessFeatureVectorizer
-
+try:
+    from politeness.features.vectorizer import PolitenessFeatureVectorizer
+except ImportError as e:
+    print("ImportError: " + str(e))
+    try:
+        from app.lib.external.politeness.features.vectorizer import PolitenessFeatureVectorizer
+    except ImportError as i:
+        print("ImportError: " + str(i))
 
 ####
 # Serialized model filename

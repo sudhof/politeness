@@ -2,14 +2,30 @@
 import random
 import _pickle as cPickle
 import numpy as np
+import os
+import sys
 import json
 
 from sklearn import svm
 from scipy.sparse import csr_matrix
 from sklearn.metrics import classification_report
 
-from ../.. politeness.features.vectorizer import PolitenessFeatureVectorizer
-from ../.. politeness.corpora import PARSED_STACK_EXCHANGE, PARSED_WIKIPEDIA
+#ROOT = os.path.normpath(os.path.join(os.path.abspath(__file__), "../../"))
+#sys.path.append(ROOT)
+#print(ROOT)
+try:
+    from politeness.features.vectorizer import PolitenessFeatureVectorizer
+    from app.lib.external import PARSED_STACK_EXCHANGE, PARSED_WIKIPEDIA
+except ImportError as e:
+    print("ImportError: " + str(e))
+    try:
+        from app.lib.external.politeness.features.vectorizer import PolitenessFeatureVectorizer
+        from app.lib.external import PARSED_STACK_EXCHANGE, PARSED_WIKIPEDIA
+    except ImportError as i:
+        print("ImportError: " + str(i))
+
+#from ../.. politeness.features.vectorizer import PolitenessFeatureVectorizer
+#from ../.. politeness.corpora import PARSED_STACK_EXCHANGE, PARSED_WIKIPEDIA
 
 """
 Sample script to train a politeness SVM
@@ -34,21 +50,24 @@ def train_svm(documents, ntesting=500):
 
     returns fitted SVC, which can be serialized using cPickle
     """
-    # Generate and persist list of unigrams, bigrams  
+    # Generate and persist list of unigrams, bigrams
+    print("Gathering N-Grams...")
     PolitenessFeatureVectorizer.generate_bow_features(documents)
 
     # For good luck
+    print("Splitting Testing and Training Docs...")
     random.shuffle(documents)
     testing = documents[-ntesting:]
     documents = documents[:-ntesting]
 
     # SAVE FOR NOW
-    cPickle.dump(testing, open("testing-data.p", 'w'))
+    print("Saving Testing Docs for Later...")
+    cPickle.dump(testing, open("testing-data.p", 'wb'))
 
     X, y = documents2feature_vectors(documents)
     Xtest, ytest = documents2feature_vectors(testing)
 
-    print("Fitting")
+    print("Fitting...")
     clf = svm.SVC(C=0.02, kernel='linear', probability=True)
     clf.fit(X, y)
 
@@ -60,9 +79,11 @@ def train_svm(documents, ntesting=500):
 
 
 def documents2feature_vectors(documents):
+    print("Calculating Feature Vectors...")
     vectorizer = PolitenessFeatureVectorizer()
     fks = False
     X, y = [], []
+    cnt = 0
     for d in documents:
         fs = vectorizer.features(d)
         if not fks:
@@ -70,28 +91,46 @@ def documents2feature_vectors(documents):
         fv = [fs[f] for f in fks]
         # If politeness score > 0.0, 
         # the doc is polite, class=1
-        l = 1 if d['score'] > 0.0 else 0
+        try:
+            l = 1 if float(d['score']) > 0.0 else 0
+        except ValueError:
+            l = 0
         X.append(fv)
         y.append(l)
+        print(cnt)
+        cnt+=1
     X = csr_matrix(np.asarray(X))
     y = np.asarray(y)
     return X, y
 
 
+def train_classifier(dataset, ntesting=500):
+    all_docs = []
+    if dataset == 'all':
+        print("Gathering All Available Docs...")
+        all_docs = json.loads(open(PARSED_STACK_EXCHANGE, 'r').read()) + json.loads(open(PARSED_WIKIPEDIA, 'r').read())
+    elif dataset == 'wikipedia':
+        print("Gathering All Wikipedia Docs...")
+        all_docs = json.loads(open(PARSED_WIKIPEDIA, 'r').read())
+    elif dataset == 'stackexchange':
+        print("Gathering All Stack Exchange Docs...")
+        all_docs = json.loads(open(PARSED_STACK_EXCHANGE, 'r').read())
+    else:
+        print("Defaulting to All Available Docs...")
+        all_docs = json.loads(open(PARSED_STACK_EXCHANGE, 'r').read()) + json.loads(open(PARSED_WIKIPEDIA, 'r').read())
+
+    print("Starting to Train Model...")
+    FITTED_SVC = train_svm(all_docs, ntesting=ntesting)
+    print("Dumping Model to File...")
+    cPickle.dump(FITTED_SVC, open("politeness-svm.p", 'wb'))
+    print("FINISHED!")
 
 if __name__ == "__main__":
-
 
     """
     Train a dummy model off our 4 sample request docs
     """
-    stack_docs = json.loads(open(PARSED_STACK_EXCHANGE, 'r').read())
-    wiki_docs = json.loads(open(PARSED_WIKIPEDIA, 'r').read())
-    all_docs = stack_docs + wiki_docs
+    from test_documents import TEST_DOCUMENTS
 
-    FITTED_SVC = train_svm(all_docs, ntesting=500)
-    cPickle.dump(FITTED_SVC, open("politeness-svm.p", 'w'))
-#    from test_documents import TEST_DOCUMENTS
-
-#    train_svm(TEST_DOCUMENTS, ntesting=1)
+    train_svm(TEST_DOCUMENTS, ntesting=1)
 

@@ -1,5 +1,13 @@
-Stanford Politeness API (Ported to Python3)
+Stanford Politeness API
 =======================
+ Version 2.00 (released March 2017)
+
+A port of the codebase from Python 2 to Python 3. The politeness classifier has been retrained and repickled using the modern versions of `pickle`, `scikit-learn`, `scipy`, `numpy`, and `nltk`.
+
+The original training data from Stack Exchange and Wikipedia has been included in the `/corpora/` folder at the root of this project. Two additional files exist in this directory which are the pickled json dictionaries of the training data in the format expected by `/scripts/train_model.py`. These pickled files include the parse trees and dependency trees.
+
+For questions regarding the port to Python 3 and the retraining of the classifier, please contact bsm9339@rit.edu (Benjamin Meyers).
+
  Version 1.01 (released October 2014)
 
 Python implementation of a politeness classifier for requests, based on the work described in:

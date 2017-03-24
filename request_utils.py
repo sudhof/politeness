@@ -1,4 +1,12 @@
-from . features.politeness_strategies import check_elems_for_strategy, initial_polar, aux_polar
+try:
+    from politeness.features.politeness_strategies import check_elems_for_strategy, initial_polar, aux_polar
+except ImportError as e:
+    print("ImportError: " + str(e))
+    try:
+        from app.lib.external.politeness.features.politeness_strategies import check_elems_for_strategy, initial_polar, aux_polar
+    except ImportError as i:
+        print("ImportError: " + str(i))
+
 
 def check_is_request(document):
     """

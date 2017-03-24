@@ -7,7 +7,14 @@ from itertools import chain
 from collections import defaultdict
 
 # local import
-from . politeness_strategies import get_politeness_strategy_features
+try:
+    from politeness.features.politeness_strategies import get_politeness_strategy_features
+except ImportError as e:
+    print("ImportError: " + str(e))
+    try:
+        from app.lib.external.politeness.features.politeness_strategies import get_politeness_strategy_features
+    except ImportError as i:
+        print("ImportError: " + str(i))
 
 # Will need access to local dir
 # for support files
@@ -106,11 +113,19 @@ class PolitenessFeatureVectorizer:
             for w in bigrams:
                 bigram_counts[w] += 1
         # Keep only ngrams that pass frequency threshold:
-        unigram_features = filter(lambda x: unigram_counts[x] > min_unigram_count, unigram_counts.iterkeys())
-        bigram_features = filter(lambda x: bigram_counts[x] > min_bigram_count, bigram_counts.iterkeys())
+        unigram_features = []
+        for key in unigram_counts.keys():
+            if unigram_counts[key] > min_unigram_count:
+                unigram_features.append(key)
+        bigram_features = []
+        for key in bigram_counts.keys():
+            if bigram_counts[key] > min_bigram_count:
+                bigram_features.append(key)
+#        unigram_features = filter(lambda x: unigram_counts[x] > min_unigram_count, unigram_counts.keys())
+#        bigram_features = filter(lambda x: bigram_counts[x] > min_bigram_count, bigram_counts.keys())
         # Save results:
-        cPickle.dump(unigram_features, open(PolitenessFeatureVectorizer.UNIGRAMS_FILENAME, 'w'))
-        cPickle.dump(bigram_features, open(PolitenessFeatureVectorizer.BIGRAMS_FILENAME, 'w'))
+        cPickle.dump(unigram_features, open(PolitenessFeatureVectorizer.UNIGRAMS_FILENAME, 'wb'))
+        cPickle.dump(bigram_features, open(PolitenessFeatureVectorizer.BIGRAMS_FILENAME, 'wb'))
 
 
 
@@ -132,8 +147,8 @@ if __name__ == "__main__":
         # Print summary of features that are present
         print("\n====================")
         print("Text: ", doc['text'])
-        print("\tUnigrams, Bigrams: %d" % len(filter(lambda x: f[x] > 0 and ("UNIGRAM_" in x or "BIGRAM_" in x), f.iterkeys())))
-        print("\tPoliteness Strategies: \n\t\t%s" % "\n\t\t".join(filter(lambda x: f[x] > 0 and "feature_politeness_" in x, f.iterkeys())))
+        print("\tUnigrams, Bigrams: %d" % len(filter(lambda x: f[x] > 0 and ("UNIGRAM_" in x or "BIGRAM_" in x), f.keys())))
+        print("\tPoliteness Strategies: \n\t\t%s" % "\n\t\t".join(filter(lambda x: f[x] > 0 and "feature_politeness_" in x, f.keys())))
         print("\n")
 
 
