@@ -24,20 +24,16 @@ NOTE: If you use this API in your work please send an email to cristiand@cs.stan
 
 **Further resources:**
 
-    Info about our work: http://www.mpi-sws.org/~cristian/Politeness.html
-
-    A web interface to the politeness model: http://politeness.mpi-sws.org/
-
-    The Stanford Politeness Corpus: http://www.mpi-sws.org/~cristian/Politeness_files/Stanford_politeness_corpus.zip
-
+* Info about our work: http://www.mpi-sws.org/~cristian/Politeness.html
+* A web interface to the politeness model: http://politeness.mpi-sws.org/
+* The Stanford Politeness Corpus: http://www.mpi-sws.org/~cristian/Politeness_files/Stanford_politeness_corpus.zip
+* The Stanford Politeness Corpus as compressed JSON containing the tree and dependency parses used to train the model in version 2.00: [Wikipedia](https://drive.google.com/open?id=0B5g3-T0xMyQaWnk3M3VKUjVnc1k) (~2GB; ~8GB uncompressed). [Stack Exchange](https://drive.google.com/open?id=0B5g3-T0xMyQaQjdzTUtlTl81cVE) (~4GB; ~16GB uncompressed).
 
 **Using this API you can:**
 
-- classify requests using politeness.model.score  (using the provided pre-trained model)
-
-- train new models on new data using politeness.scripts.train_model
-
-- experiment with new politeness features in politeness.features.vectorizer and politeness.features.politeness_strategies
+* classify requests using politeness.model.score  (using the provided pre-trained model)
+* train new models on new data using politeness.scripts.train_model
+* experiment with new politeness features in politeness.features.vectorizer and politeness.features.politeness_strategies
 
 
 **Input:** Requests must be pre-processed with sentences and dependency parses.  We used nltk's [PunktSentenceTokenizer](http://www.nltk.org/api/nltk.tokenize.html#module-nltk.tokenize.punkt) for sentence tokenization and [Stanford CoreNLP](http://nlp.stanford.edu/software/corenlp.shtml) [version 1.3.3](http://nlp.stanford.edu/software/stanford-corenlp-2012-07-09.tgz) for dependency parsing.  A sample of the expected format for documents is given in politeness.test_documents
