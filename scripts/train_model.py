@@ -10,22 +10,8 @@ from sklearn import svm
 from scipy.sparse import csr_matrix
 from sklearn.metrics import classification_report
 
-#ROOT = os.path.normpath(os.path.join(os.path.abspath(__file__), "../../"))
-#sys.path.append(ROOT)
-#print(ROOT)
-try:
-    from politeness.features.vectorizer import PolitenessFeatureVectorizer
-    from app.lib.external import PARSED_STACK_EXCHANGE, PARSED_WIKIPEDIA
-except ImportError as e:
-    print("ImportError: " + str(e))
-    try:
-        from app.lib.external.politeness.features.vectorizer import PolitenessFeatureVectorizer
-        from app.lib.external import PARSED_STACK_EXCHANGE, PARSED_WIKIPEDIA
-    except ImportError as i:
-        print("ImportError: " + str(i))
-
-#from ../.. politeness.features.vectorizer import PolitenessFeatureVectorizer
-#from ../.. politeness.corpora import PARSED_STACK_EXCHANGE, PARSED_WIKIPEDIA
+from features.vectorizer import PolitenessFeatureVectorizer
+from corpora import PARSED_STACK_EXCHANGE, PARSED_WIKIPEDIA
 
 """
 Sample script to train a politeness SVM
