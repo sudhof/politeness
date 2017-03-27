@@ -7,14 +7,7 @@ from itertools import chain
 from collections import defaultdict
 
 # local import
-try:
-    from politeness.features.politeness_strategies import get_politeness_strategy_features
-except ImportError as e:
-    print("ImportError: " + str(e))
-    try:
-        from app.lib.external.politeness.features.politeness_strategies import get_politeness_strategy_features
-    except ImportError as i:
-        print("ImportError: " + str(i))
+from features.politeness_strategies import get_politeness_strategy_features
 
 # Will need access to local dir
 # for support files
