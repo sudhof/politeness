@@ -49,14 +49,7 @@ for name, package, expected_v in packages2versions:
 
 ####
 
-try:
-    from politeness.features.vectorizer import PolitenessFeatureVectorizer
-except ImportError as e:
-    print("ImportError: " + str(e))
-    try:
-        from app.lib.external.politeness.features.vectorizer import PolitenessFeatureVectorizer
-    except ImportError as i:
-        print("ImportError: " + str(i))
+from features.vectorizer import PolitenessFeatureVectorizer
 
 ####
 # Serialized model filename
@@ -109,7 +102,7 @@ if __name__ == "__main__":
     Sample classification of requests
     """
 
-    from . test_documents import TEST_DOCUMENTS
+    from test_documents import TEST_DOCUMENTS
 
     for doc in TEST_DOCUMENTS:
 
