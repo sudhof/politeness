@@ -13,21 +13,21 @@ For questions regarding the port to Python 3 and the retraining of the classifie
 
 Python implementation of a politeness classifier for requests, based on the work described in:
 
-	A computational approach to politeness with application to social factors.  	
-	Cristian Danescu-Niculescu-Mizil, Moritz Sudhof, Dan Jurafsky, Jure Leskovec, Christopher Potts.  
+	A computational approach to politeness with application to social factors.
+	Cristian Danescu-Niculescu-Mizil, Moritz Sudhof, Dan Jurafsky, Jure Leskovec, Christopher Potts.
 	Proceedings of ACL, 2013.
 
 
 We release this code hoping that others will use and improve on our work.
 
-NOTE: If you use this API in your work please send an email to cristiand@cs.stanford.edu so we can add you to our list of users.  Thanks!
+NOTE: If you use this API in your work please send an email to cristian@cs.cornell.edu so we can add you to our list of users.  Thanks!
 
 
 **Further Resources:**
 
-* Info about our work: http://www.mpi-sws.org/~cristian/Politeness.html
+* Info about our work: http://cs.cornell.edu/~cristian/Politeness.html
 * A web interface to the politeness model: http://politeness.mpi-sws.org/
-* The Stanford Politeness Corpus: http://www.mpi-sws.org/~cristian/Politeness_files/Stanford_politeness_corpus.zip
+* The Stanford Politeness Corpus: http://cs.cornell.edu/~cristian/Politeness_files/Stanford_politeness_corpus.zip
 * The Stanford Politeness Corpus as compressed JSON containing the tree and dependency parses used to train the model in version 2.00: [Wikipedia](http://people.rc.rit.edu/~bsm9339/corpora/stanford_politeness/wikipedia.parsed.json.gz) (~2GB; ~8GB uncompressed). [Stack Exchange](http://people.rc.rit.edu/~bsm9339/corpora/stanford_politeness/stack-exchange.parsed.json.gz) (~4GB; ~16GB uncompressed).
 
 **Using this API you can:**
@@ -66,4 +66,4 @@ To make sure everything's working, navigate to the code directory and run
 This should print out the politeness probabilities for 4 test documents.
 
 
-**Contact:** Please email any questions to: cristiand@cs.stanford.edu (Cristian Danescu-Niculescu-Mizil) and sudhof@stanford.edu (Moritz Sudhof)
+**Contact:** Please email any questions to: cristian@cs.cornell.edu (Cristian Danescu-Niculescu-Mizil) and sudhof@stanford.edu (Moritz Sudhof)
