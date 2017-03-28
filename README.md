@@ -20,8 +20,7 @@ Python implementation of a politeness classifier for requests, based on the work
 
 We release this code hoping that others will use and improve on our work.
 
-NOTE: If you use this API in your work please send an email to cristiand@cs.stanford.edu so we can add you to our list of users.  Thanks!
-
+NOTE: If you use this API in your work please send an email to cristian@cs.cornell.edu so we can add you to our list of users.  Thanks!
 
 **Further Resources:**
 
@@ -64,6 +63,5 @@ To make sure everything's working, navigate to the code directory and run
     python model.py
 
 This should print out the politeness probabilities for 4 test documents.
-
 
 **Contact:** Please email any questions to: cristiand@cs.stanford.edu (Cristian Danescu-Niculescu-Mizil) and sudhof@stanford.edu (Moritz Sudhof)
