@@ -22,7 +22,6 @@ We release this code hoping that others will use and improve on our work.
 
 NOTE: If you use this API in your work please send an email to cristian@cs.cornell.edu so we can add you to our list of users.  Thanks!
 
-
 **Further Resources:**
 
 * Info about our work: http://cs.cornell.edu/~cristian/Politeness.html
@@ -43,7 +42,7 @@ NOTE: If you use this API in your work please send an email to cristian@cs.corne
 **Caveat:** This work focuses on requests, not all kinds of utterances. The model's predictions on non-request utterances will be less accurate. As a bonus, our code also includes a very simple heuristic to check whether a document looks like a request (see politeness.request_utils).
 
 
-**Requirements:** 
+**Requirements:**
 
 python package requirements are listed in requirements.txt. We recommend setting up a new python environment using virtualenv and installing the dependencies by running
 
@@ -64,6 +63,5 @@ To make sure everything's working, navigate to the code directory and run
     python model.py
 
 This should print out the politeness probabilities for 4 test documents.
-
 
 **Contact:** Please email any questions to: cristian@cs.cornell.edu (Cristian Danescu-Niculescu-Mizil) and sudhof@stanford.edu (Moritz Sudhof)
