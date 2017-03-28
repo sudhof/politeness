@@ -1,6 +1,5 @@
 import urllib
 import gzip
-import os
 import traceback
 
 downloader = urllib.URLopener()
@@ -14,8 +13,8 @@ def download():
 def extract():
     try:
         print("Extracting preparsed datasets. This will take a while...")
-        open("wikipedia.parsed.json", "w").write(gzip.open("wikipedia.parsed.json.gz", "rb"))
-        open("stack-exchange.parsed.json", "w").write(gzip.open("stack-exchange.parsed.json.gz", "rb"))
+        open("wikipedia.parsed.json", "w+").write(gzip.open("wikipedia.parsed.json.gz", "rb"))
+        open("stack-exchange.parsed.json", "w+").write(gzip.open("stack-exchange.parsed.json.gz", "rb"))
         print("Finished!")
     except Exception as e:
-        pass
+        traceback.print_exception(extype, exvalue, extrace)
