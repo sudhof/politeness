@@ -27,7 +27,7 @@ NOTE: If you use this API in your work please send an email to cristiand@cs.stan
 * Info about our work: http://www.mpi-sws.org/~cristian/Politeness.html
 * A web interface to the politeness model: http://politeness.mpi-sws.org/
 * The Stanford Politeness Corpus: http://www.mpi-sws.org/~cristian/Politeness_files/Stanford_politeness_corpus.zip
-* The Stanford Politeness Corpus as compressed JSON containing the tree and dependency parses used to train the model in version 2.00: [Wikipedia](https://drive.google.com/open?id=0B5g3-T0xMyQaWnk3M3VKUjVnc1k) (~2GB; ~8GB uncompressed). [Stack Exchange](https://drive.google.com/open?id=0B5g3-T0xMyQaQjdzTUtlTl81cVE) (~4GB; ~16GB uncompressed).
+* The Stanford Politeness Corpus as compressed JSON containing the tree and dependency parses used to train the model in version 2.00: [Wikipedia](http://people.rc.rit.edu/~bsm9339/corpora/stanford_politeness/wikipedia.parsed.json.gz) (~2GB; ~8GB uncompressed). [Stack Exchange](http://people.rc.rit.edu/~bsm9339/corpora/stanford_politeness/stack-exchange.parsed.json.gz) (~4GB; ~16GB uncompressed).
 
 **Using this API you can:**
 
