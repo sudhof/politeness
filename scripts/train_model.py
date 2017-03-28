@@ -10,6 +10,7 @@ from sklearn import svm
 from scipy.sparse import csr_matrix
 from sklearn.metrics import classification_report
 
+#### PACKAGE IMPORTS ###########################################################
 from features.vectorizer import PolitenessFeatureVectorizer
 from corpora import PARSED_STACK_EXCHANGE, PARSED_WIKIPEDIA
 
@@ -26,15 +27,17 @@ and treat this as a regression problem
 
 def train_svm(documents, ntesting=500):
     """
-    :param documents- politeness-annotated training data
-    :type documents- list of dicts
-        each document must be preprocessed and
-        'sentences' and 'parses' and 'score' fields.
-
-    :param ntesting- number of docs to reserve for testing
-    :type ntesting- int
-
-    returns fitted SVC, which can be serialized using cPickle
+    Given a list annotated documents (training data) of the following form, and
+    an integer specifying the number of documents to withhold for testing,
+    return a fitted SVC, serialized via pickle.
+        {
+            "sentences": ["sent1 text", "sent2 text", ...],
+            "parses": [
+                          [list of sent1 dependency-parses],
+                          [list of sent2 dependency-parses],
+                          ...
+                      ]
+        }
     """
     # Generate and persist list of unigrams, bigrams
     print("Gathering N-Grams...")
@@ -65,6 +68,7 @@ def train_svm(documents, ntesting=500):
 
 
 def documents2feature_vectors(documents):
+    """ Generate feature vectors for the given list of documents. """
     print("Calculating Feature Vectors...")
     vectorizer = PolitenessFeatureVectorizer()
     fks = False
@@ -89,8 +93,17 @@ def documents2feature_vectors(documents):
     y = np.asarray(y)
     return X, y
 
-
 def train_classifier(dataset, ntesting=500):
+    """
+    Wrapper function for train_svm(). Given a dataset identifier ('all',
+    'wikipedia', or 'stackexchange') and an integer specifying how many
+    documents to withhold for testing, grab the annotated documents from
+    the preprocessed annotated dataset(s).
+
+    If errors occur in this function, it is likely that the preprocessed
+    annotated datasets need to be downloaded and extracted. See
+    /corpora/download.py for functions to automatically download them for you.
+    """
     all_docs = []
     if dataset == 'all':
         print("Gathering All Available Docs...")
@@ -109,13 +122,11 @@ def train_classifier(dataset, ntesting=500):
     FITTED_SVC = train_svm(all_docs, ntesting=ntesting)
     print("Dumping Model to File...")
     cPickle.dump(FITTED_SVC, open("politeness-svm.p", 'wb'))
-    print("FINISHED!")
+    print("Finishing up...")
 
 if __name__ == "__main__":
+    # Train a dummy model off our 4 sample request docs
 
-    """
-    Train a dummy model off our 4 sample request docs
-    """
     from test_documents import TEST_DOCUMENTS
 
     train_svm(TEST_DOCUMENTS, ntesting=1)

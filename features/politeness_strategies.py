@@ -1,45 +1,51 @@
-
 import codecs
 import os
 import re
 from itertools import chain
 from collections import defaultdict
 
-#####
-# Word lists
-
-hedges = [
-    "think", "thought", "thinking", "almost",
-    "apparent", "apparently", "appear", "appeared", "appears", "approximately", "around",
-    "assume", "assumed", "certain amount", "certain extent", "certain level", "claim",
-    "claimed", "doubt", "doubtful", "essentially", "estimate",
-    "estimated", "feel", "felt", "frequently", "from our perspective", "generally", "guess",
-    "in general", "in most cases", "in most instances", "in our view", "indicate", "indicated",
-    "largely", "likely", "mainly", "may", "maybe", "might", "mostly", "often", "on the whole",
-    "ought", "perhaps", "plausible", "plausibly", "possible", "possibly", "postulate",
-    "postulated", "presumable", "probable", "probably", "relatively", "roughly", "seems",
-    "should", "sometimes", "somewhat", "suggest", "suggested", "suppose", "suspect", "tend to",
-    "tends to", "typical", "typically", "uncertain", "uncertainly", "unclear", "unclearly",
-    "unlikely", "usually", "broadly", "tended to", "presumably", "suggests",
-    "from this perspective", "from my perspective", "in my view", "in this view", "in our opinion",
-    "in my opinion", "to my knowledge", "fairly", "quite", "rather", "argue", "argues", "argued",
-    "claims", "feels", "indicates", "supposed", "supposes", "suspects", "postulates"
-]
-
-# Positive and negative words from Liu
+# Get the Local Directory to access support files.
 local_dir = os.path.split(__file__)[0]
-pos_filename = os.path.join(local_dir, "liu-positive-words.txt")
-neg_filename = os.path.join(local_dir, "liu-negative-words.txt")
 
+#### HEDGES ####################################################################
+####     Words that are typically used to lessen the impact of an utterance. For
+####     example, once could could 'lessen the impact' of an utterance during a
+####     debate by saying "that seems incorrect" instead of "that's wrong".
+hedges = ["almost", "apparent", "apparently", "appear", "appeared", "appears",
+          "approximately", "argue", "argued", "argues", "around", "assume",
+          "assumed", "broadly", "certain amount", "certain extent",
+          "certain level", "claim", "claimed", "claims", "doubt", "doubtful",
+          "essentially", "estimate", "estimated", "fairly", "feel", "feels",
+          "felt", "frequently", "from my perspective", "from our perspective",
+          "from this perspective", "generally", "guess", "in general",
+          "in most cases", "in most instances", "in my opinion", "in my view",
+          "in our opinion", "in our view", "in this view", "indicate",
+          "indicated", "indicates", "largely", "likely", "mainly", "may",
+          "maybe", "might", "mostly", "often", "on the whole", "ought",
+          "perhaps", "plausible", "plausibly", "possible", "possibly",
+          "postulate", "postulated", "postulates", "presumable", "presumably",
+          "probable", "probably", "quite", "rather", "relatively", "roughly",
+          "seems", "should", "sometimes", "somewhat", "suggest", "suggested",
+          "suggests", "suppose", "supposed", "supposes", "suspect", "suspects",
+          "tend to", "tended to", "tends to", "think", "thinking", "thought",
+          "to my knowledge", "typical", "typically", "uncertain", "uncertainly",
+          "unclear", "unclearly", "unlikely", "usually"]
+
+#### POSITIVE & NEGATIVE WORD LISTS ############################################
+####    Minqing Hu and Bing Liu. "Mining and summarizing customer reviews."
+####        Proceedings of the ACM SIGKDD International Conference on Knowledge
+####        Discovery & Data Mining (KDD-2004, full paper), Seattle, Washington,
+####        USA, Aug 22-25, 2004.
+####    http://www.cs.uic.edu/~liub/publications/kdd04-revSummary.pdf
+pos_filename = os.path.join(local_dir, "liu-positive-words.txt")
 positive_words = set(map(lambda x: x.strip(), codecs.open(pos_filename, encoding='utf-8').read().splitlines()))
+
+neg_filename = os.path.join(local_dir, "liu-negative-words.txt")
 negative_words = set(map(lambda x: x.strip(), codecs.open(neg_filename, encoding='utf-8').read().splitlines()))
 
-
-####
-# Parse element accessors.
-# Given parse element string like "nsubj(dont-5, I-4)" 
-# transform or return specific constituents
-
+#### PARSE ELEMENT ANCESTORS ###################################################
+####    Given a dependency parse string, such as "nsubj(dont-5, I-4)", tranform
+####    or return specific constituents.
 parse_element_split_re = re.compile(r"([-\w!?]+)-(\d+)")
 getleft = lambda p: parse_element_split_re.findall(p)[0][0].lower()
 getleftpos = lambda p: int(parse_element_split_re.findall(p)[0][1])
@@ -48,18 +54,14 @@ getrightpos = lambda p: int(parse_element_split_re.findall(p)[1][1])
 remove_numbers = lambda p: re.sub(r"\-(\d+)" , "", p)
 getdeptag = lambda p: p.split("(")[0]
 
-####
-## Strategy Functions
-## Defined as named lambda functions that return booleans
-## Each function checks for a single strategy,
-## returns True if strategy detected, False otherwise.
-## Some functions operate on dependency-parse elements,
-## some on string text inputs, some on token lists
-####
+#### STRATEGY FUNCTIONS ########################################################
+####    Each strategy function is defined as a named lambda function that
+####    returns a boolean: True if the strategy is detected; False otherwise.
+####    Some functions operate on dependency-parse elements, others on string
+####    text inputs, and other on token lists.
 
-####
-# Dependency-based politeness strategies
-
+#### POLITENESS STRATEGIES #####################################################
+####    Based on dependency-parses.
 please = lambda p: len(set([getleft(p), getright(p)]).intersection(["please"])) > 0 and 1 not in [getleftpos(p), getrightpos(p)]
 please.__name__ = "Please"
 
@@ -69,7 +71,7 @@ pleasestart.__name__ = "Please start"
 hashedges = lambda p:   getdeptag(p) == "nsubj" and  getleft(p) in hedges
 hashedges.__name__ = "Hedges"
 
-deference = lambda p: (getleftpos(p) == 1 and getleft(p) in ["great","good","nice","good","interesting","cool","excellent","awesome"]) or (getrightpos(p) == 1 and getright(p) in ["great","good","nice","good","interesting","cool","excellent","awesome"]) 
+deference = lambda p: (getleftpos(p) == 1 and getleft(p) in ["great","good","nice","good","interesting","cool","excellent","awesome"]) or (getrightpos(p) == 1 and getright(p) in ["great","good","nice","good","interesting","cool","excellent","awesome"])
 deference.__name__ = "Deference"
 
 gratitude = lambda p: getleft(p).startswith("thank") or getright(p).startswith("thank") or "(appreciate, i)" in remove_numbers(p).lower()
@@ -84,16 +86,16 @@ groupidentity.__name__ = "1st person pl."
 firstperson = lambda p: 1 not in [getleftpos(p), getrightpos(p)] and len(set([getleft(p), getright(p)]).intersection(["i", "my", "mine", "myself"])) > 0
 firstperson.__name__ = "1st person"
 
-secondperson_start = lambda p: (getleftpos(p) == 1 and getleft(p) in ("you","your","yours","yourself")) or (getrightpos(p) == 1 and getright(p) in ("you","your","yours","yourself")) 
+secondperson_start = lambda p: (getleftpos(p) == 1 and getleft(p) in ("you","your","yours","yourself")) or (getrightpos(p) == 1 and getright(p) in ("you","your","yours","yourself"))
 secondperson_start.__name__ = "2nd person start"
 
-firstperson_start = lambda p: (getleftpos(p) == 1 and getleft(p) in ("i","my","mine","myself")) or (getrightpos(p) == 1 and getright(p) in ("i","my","mine","myself")) 
+firstperson_start = lambda p: (getleftpos(p) == 1 and getleft(p) in ("i","my","mine","myself")) or (getrightpos(p) == 1 and getright(p) in ("i","my","mine","myself"))
 firstperson_start.__name__ = "1st person start"
 
-hello = lambda p: (getleftpos(p) == 1 and getleft(p) in ("hi","hello","hey")) or (getrightpos(p) == 1 and getright(p) in ("hi","hello","hey")) 
+hello = lambda p: (getleftpos(p) == 1 and getleft(p) in ("hi","hello","hey")) or (getrightpos(p) == 1 and getright(p) in ("hi","hello","hey"))
 hello.__name__ = "Indirect (greeting)"
 
-really = lambda p: (getright(p) == "fact" and getdeptag(p) == "prep_in") or remove_numbers(p) in ("det(point, the)","det(reality, the)","det(truth, the)") or len(set([getleft(p), getright(p)]).intersection(["really", "actually", "honestly", "surely"])) > 0  
+really = lambda p: (getright(p) == "fact" and getdeptag(p) == "prep_in") or remove_numbers(p) in ("det(point, the)","det(reality, the)","det(truth, the)") or len(set([getleft(p), getright(p)]).intersection(["really", "actually", "honestly", "surely"])) > 0
 really.__name__ = "Factuality"
 
 why = lambda p: (getleftpos(p) in (1,2) and getleft(p) in ("what","why","who","how")) or (getrightpos(p) in (1,2) and getright(p) in ("what","why","who","how"))
@@ -108,36 +110,28 @@ btw.__name__ = "Indirect (btw)"
 secondperson = lambda p: 1 not in (getleftpos(p), getrightpos(p)) and len(set([getleft(p), getright(p)]).intersection(["you","your","yours","yourself"])) > 0
 secondperson.__name__ = "2nd person"
 
-####
-# Dependency-based request identification heuristics
+#### REQUEST IDENTIFICATION HEURISTICS #########################################
+####    Based on dependency-parses.
+polar_set = set(["am", "are", "can", "could", "dare", "did", "do", "does",
+                 "had", "has", "have", "how", "if", "is", "may", "might",
+                 "must", "need", "ought", "shall", "should", "was", "were",
+                 "when", "which", "who", "whom", "will", "would"])
 
-polar_set = set([
-    "is", "are", "was", "were", "am", "have", 
-    "has", "had", "can", "could", "shall", 
-    "should", "will", "would", "may", "might", 
-    "must", "do", "does", "did", "ought", "need", 
-    "dare", "if", "when", "which", "who", "whom", "how"
-])
 initial_polar = lambda p: (getleftpos(p)==1 and getleft(p) in polar_set) or (getrightpos(p)==1 and getright(p) in polar_set)
 initial_polar.__name__ = "Initial Polar"
 
 aux_polar = lambda p: getdeptag(p) == "aux" and getright(p) in polar_set
 aux_polar.__name__ = "Aux Polar"
 
-####
-# String-based politeness strategies
-# (i.e., input is a sentence)
-
-# Verb moods
+####    Based on strings.
+####    Verb moods.
 subjunctive = lambda s: "could you" in s or "would you" in s
 subjunctive.__name__ = "SUBJUNCTIVE"
 
 indicative = lambda s: "can you" in s or "will you" in s
 indicative.__name__ = "INDICATIVE"
 
-####
-# Token list politeness strategies
-
+####    Based on token lists.
 has_hedge = lambda l: len(set(l).intersection(hedges)) > 0
 has_hedge.__name__ = "HASHEDGE"
 
@@ -147,16 +141,15 @@ has_positive.__name__ = "HASPOSITIVE"
 has_negative = lambda l: len(negative_words.intersection(l)) > 0
 has_negative.__name__ = "HASNEGATIVE"
 
-
-####
-# strategy_fnc application helper
-
-# For debugging, prints exceptions
+#### EVALUATE STRATEGY FUNCTIONS ###############################################
 VERBOSE_ERRORS = False
 
 def check_elems_for_strategy(elems, strategy_fnc):
-    # given a strategy lambda function, 
-    # see if strategy present in at least one elem
+    """
+    Given a strategy and a list of elements, return True if the strategy is
+    present in at least one of the elements. Return False if the strategy is
+    not present in any of the elements.
+    """
     for elem in elems:
         try:
             testres = strategy_fnc(elem)
@@ -169,58 +162,45 @@ def check_elems_for_strategy(elems, strategy_fnc):
     return False
 
 
-####
-## Feature extraction
-## Detect politeness strategies in documents
-## by applying strategy fncs.
-## Return feature dict
-####
+#### FEATURE EXTRACTION ########################################################
+####    Define the dependency-based strategies to include:
+DEPENDENCY_STRATEGIES = [please, pleasestart, btw, hashedges, really, deference,
+                         gratitude, apologize, groupidentity, firstperson,
+                         firstperson_start, secondperson, secondperson_start,
+                         hello, why, conj]
 
-# Define the dependency-based strategies to include:
-DEPENDENCY_STRATEGIES = [
-    please, pleasestart, btw, 
-    hashedges, really, deference, 
-    gratitude, apologize, groupidentity, 
-    firstperson, firstperson_start, 
-    secondperson, secondperson_start,
-    hello, why, conj
-]
-# And raw text-based strategies:
+####    Define the text-based strategies to include:
 TEXT_STRATEGIES = [subjunctive, indicative]
-# And term list strategies:
+
+####    Define the term-based strategies to include:
 TERM_STRATEGIES = [has_hedge, has_positive, has_negative]
 
-# Use strategies to generate list of all feature names
-# lambda function turns strategy function names into feature names
+####    Generate a list of all feature names based on the strategies. The lambda
+####    function converts the strategy names into feature names.
 fnc2feature_name = lambda f: "feature_politeness_==%s==" % f.__name__.replace(" ","_")
 POLITENESS_FEATURES = map(fnc2feature_name, chain(DEPENDENCY_STRATEGIES, TEXT_STRATEGIES, TERM_STRATEGIES))
-#print POLITENESS_FEATURES
-
 
 def get_politeness_strategy_features(document):
     """
-    :param document- pre-processed request document
-    :type document- dict with 'sentences', 'parses',
-                        and 'unigrams' fields
-
+    Given a pre-processed request document of the form:
         {
-          "sentences": ["sentence 1", "sentence 2"],
-          "parses": [
-            ["nsubj(dont-5, I-4)", ...],
-            ["nsubj(dont-5, I-4)", ...],
-          ],
-          "unigrams": ['a', 'b', 'c']
+            "sentences": ["sent1", "sent2", ...],
+            "parses": [
+                          ["nsubj(dont-5, I-4)", ...],
+                          ["nsubj(dont-5, I-4)", ...],
+                          ...
+                      ],
+            "unigrams": ["a", "b", "c", ...]
         }
 
+    Return a binary feature dict of the following form, where the value for each
+    feature is a binary value (1 or 0):
+        { "feature_1": 1, "feature_2": 0, "feature_3": 1, ... }
 
-    Returns- binary feature dict
-        {
-            feature_name: 1 or 0
-        }
-
-    Currently return binary features- just checking for
-    presence of a strategy. One could alternatively decide
-    to count occurrences of the strategies.
+    This currently only returns binary features; a value of 1 indicates the the
+    strategy is present in the document (0 indicates not present). You could
+    modify this code to count the number occurrences of each strategy (if you
+    are inclined to do so) by changing Line
     """
     if not document.get('sentences', False) or not document.get('parses', False):
         # Nothing here. Return all 0s
@@ -234,7 +214,7 @@ def get_politeness_strategy_features(document):
         f = fnc2feature_name(fnc)
         features[f] = int(check_elems_for_strategy(parses, lambda p: check_elems_for_strategy(p, fnc)))
 
-    # Text-based
+    # Text-based features:
     sentences = map(lambda s: s.lower(), document['sentences'])
     for fnc in TEXT_STRATEGIES:
         f = fnc2feature_name(fnc)
