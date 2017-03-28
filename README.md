@@ -1,14 +1,15 @@
 Stanford Politeness API
 =======================
- Version 2.00 (released March 2017)
+
+#### Version 2.00 (released March 2017)
 
 A port of the codebase from Python 2 to Python 3. The politeness classifier has been retrained and repickled using the modern versions of `pickle`, `scikit-learn`, `scipy`, `numpy`, and `nltk`.
 
-The original training data from Stack Exchange and Wikipedia has been included in the `/corpora/` folder at the root of this project. Two additional files exist in this directory which are the pickled json dictionaries of the training data in the format expected by `/scripts/train_model.py`. These pickled files include the parse trees and dependency trees.
+The original training data from Stack Exchange and Wikipedia has been included in the `/corpora/` folder at the root of this project. If you wish to retrain the model, you will either need to use `/corpora/stack-exchange.annotated.csv` and `/corpora/wikipedia.annotated.csv` in combination with the Stanford CoreNLP dependency parser to generate the documents in the expected format for `/scripts/train_model.py`. Because this is a royal pain, please feel free to use the preparsed files (linked to under <b>Further Resources</b>)! Simply download an extract these two files into `/corpora/`.
 
 For questions regarding the port to Python 3 and the retraining of the classifier, please contact bsm9339@rit.edu (Benjamin Meyers).
 
- Version 1.01 (released October 2014)
+#### Version 1.01 (released October 2014)
 
 Python implementation of a politeness classifier for requests, based on the work described in:
 
@@ -22,7 +23,7 @@ We release this code hoping that others will use and improve on our work.
 NOTE: If you use this API in your work please send an email to cristiand@cs.stanford.edu so we can add you to our list of users.  Thanks!
 
 
-**Further resources:**
+**Further Resources:**
 
 * Info about our work: http://www.mpi-sws.org/~cristian/Politeness.html
 * A web interface to the politeness model: http://politeness.mpi-sws.org/
