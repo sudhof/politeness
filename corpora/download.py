@@ -1,5 +1,6 @@
 import urllib
 import gzip
+import sys
 import traceback
 
 downloader = urllib.URLopener()
@@ -18,3 +19,15 @@ def extract():
         print("Finished!")
     except Exception as e:
         traceback.print_exception(extype, exvalue, extrace)
+
+if __name__ = "__main__":
+    args = sys.argv[1:]
+    if len(args) < 1:
+        download()
+        extract()
+    elif args[0] == 'download':
+        download()
+    elif args[0] == 'extract':
+        extract()
+    else:
+        print("Received invalid command.")
