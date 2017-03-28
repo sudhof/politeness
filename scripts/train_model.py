@@ -1,6 +1,6 @@
 
 import random
-import _pickle as cPickle
+import _pickle
 import numpy as np
 import os
 import sys
@@ -51,7 +51,7 @@ def train_svm(documents, ntesting=500):
 
     # SAVE FOR NOW
     print("Saving Testing Docs for Later...")
-    cPickle.dump(testing, open("testing-data.p", 'wb'))
+    _pickle.dump(testing, open("testing-data.p", 'wb'))
 
     X, y = documents2feature_vectors(documents)
     Xtest, ytest = documents2feature_vectors(testing)
@@ -121,7 +121,7 @@ def train_classifier(dataset, ntesting=500):
     print("Starting to Train Model...")
     FITTED_SVC = train_svm(all_docs, ntesting=ntesting)
     print("Dumping Model to File...")
-    cPickle.dump(FITTED_SVC, open("politeness-svm.p", 'wb'))
+    _pickle.dump(FITTED_SVC, open("politeness-svm.p", 'wb'))
     print("Finishing up...")
 
 if __name__ == "__main__":
