@@ -94,17 +94,39 @@ def score(request):
 
 if __name__ == "__main__":
     # Sample classification of requests
+    args = sys.argv[1:]
+    if len(args) != 1:
+        sys.exit(1)
+    else:
+        from scripts.format_input import format_doc
+        doc_text = ""
+        with open(args[0], "r") as doc:
+            doc_text = doc.read()
+        parsed_docs = format_doc(doc_text)
+        polite = []
+        impolite = []
+        for i, doc in enumerate(parsed_docs):
+            probs = score(doc)
+            polite.append(probs['polite'])
+            impolite.append(probs['impolite'])
+            print("\n====\nSentence " + str(i) + ":\n" + str(doc['sentences'][0]))
+            print("\tP(polite) = %.3f" % probs['polite'])
+            print("\tP(impolite) = %.3f" % probs['impolite'])
 
-    from test_documents import TEST_DOCUMENTS
+        print("\n====\nDocument:")
+        print("\tP(polite) = %.3f" % np.mean(polite))
+        print("\tP(impolite) = %.3f" % np.mean(impolite))
 
-    for doc in TEST_DOCUMENTS:
+#    from test_documents import TEST_DOCUMENTS
 
-        probs = score(doc)
+#    for doc in TEST_DOCUMENTS:
 
-        print("====================")
-        print("Text: ", doc['text'])
-        print("\tP(polite) = %.3f" % probs['polite'])
-        print("\tP(impolite) = %.3f" % probs['impolite'])
-        print("\n")
+#        probs = score(doc)
+
+#        print("====================")
+#        print("Text: ", doc['text'])
+#        print("\tP(polite) = %.3f" % probs['polite'])
+#        print("\tP(impolite) = %.3f" % probs['impolite'])
+#        print("\n")
 
 

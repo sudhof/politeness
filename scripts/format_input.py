@@ -1,9 +1,9 @@
+import json
 import os
+import re
 import requests
 import sys
 import traceback
-
-from politeness.model import score
 
 from json import JSONDecodeError
 from requests.exceptions import RequestException
@@ -11,7 +11,7 @@ from nltk.tokenize import sent_tokenize
 
 HEADERS = {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
 PARAMS = {'properties': "{'annotators': 'tokenize,ssplit,pos,parse,depparse'}"}
-URL = ""
+URL = ''
 
 def clean_depparse(dep):
     """
@@ -21,64 +21,57 @@ def clean_depparse(dep):
                str(dep['governor']) + ", " + dep['dependentGloss'] + "-" +
                str(dep['dependent']) + ")")
 
+def clean_treeparse(tree):
+    cleaned_tree = re.sub(r' {2,}', ' ', tree)
+    cleaned_tree = re.sub(r'\n', '', cleaned_tree)
+    cleaned_tree = re.sub(r'\([^\s]*\s', '', cleaned_tree)
+    cleaned_tree = re.sub(r'\)', '', cleaned_tree)
+    cleaned_tree = re.sub(r'-LRB-', '(', cleaned_tree)
+    cleaned_tree = re.sub(r'-RRB-', ')', cleaned_tree)
+
+    return cleaned_tree
+
 def get_sentences(doc_text):
     temp = doc_text.strip().split('\n')
     sents = []
     for s in temp:
         sents += sent_tokenize(s.strip())
-        
+
     return sents
-    
-def get_parses(sents):
+
+def get_parses(sent):
     global HEADERS, PARAMS, URL
-    raw_parses = []
-    for sent in sents:
-        parse = {'deps': "", 'sent': ""}
-        try:
-            response = requests.post(
-                    URL, params=PARAMS, headers=HEADERS,
-                    data=sent.encode('UTF-8')
-                )
-            response.raise_for_status()
-            for sentence in response.json()['sentences']:
-                parse['deps'] = sentence['ehancedPlusPlusDependencies']
-                parse['sent'] = sentence
-                raw_parses.append(parse)
-                
-        except Exception as e:
-            sys.stderr.write('Exception\n')
-            sys.stderr.write('  Text: {}\n'.format(self.text[:50]))
-            extype, exvalue, extrace = sys.exc_info()
-            traceback.print_exception(extype, exvalue, extrace)
-            raw_parses.append({'deps': 'X', 'sent': 'X'})
-        
-    return raw_parses
-            
+    parse = {'deps': [], 'sent': ""}
+    try:
+        response = requests.post(
+                URL, params=PARAMS, headers=HEADERS,
+                data=sent.encode('UTF-8')
+            )
+        response.raise_for_status()
+        for sentence in response.json()['sentences']:
+            parse['deps'] = sentence['enhancedPlusPlusDependencies']
+            parse['sent'] = sent
+    except Exception as e:
+        sys.stderr.write('Exception\n')
+        sys.stderr.write('  Sentence: {}\n'.format(sent[:50]))
+        extype, exvalue, extrace = sys.exc_info()
+        traceback.print_exception(extype, exvalue, extrace)
+        raw_parses.append({'deps': 'X', 'sent': 'X'})
+
+    return parse
+
 def format_doc(doc_text):
     sents = get_sentences(doc_text)
-    raw_parses = get_parses(sents)
+    raw_parses = []
+    for sent in sents:
+        raw_parses.append(get_parses(sent))
     results = []
-    result = {'parses': [], 'sentences': []}
     for raw in raw_parses:
+        result = {'parses': [], 'sentences': []}
         for dep in raw['deps']:
             result['parses'].append(clean_depparse(dep))
-        result['sentences'] = raw['sent']
-        
-        print(result)
-        results.append(result)
-        
-    return results
+        result['sentences'].append(clean_treeparse(raw['sent']))
 
-if __name__ == "__main__":
-    args = sys.argv[1:]
-    if len(args) != 1:
-        sys.exit(1)
-    else:
-        doc_text = ""
-        with open(args[0], "r") as doc:
-            doc_text = doc.read()
-            
-       parsed_doc = format_doc(doc_text)
-       print(parsed_doc)
-       print(score(parsed_doc))
-       
+        results.append(result)
+
+    return results
