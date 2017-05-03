@@ -1,13 +1,13 @@
 Stanford Politeness API
 =======================
- Version 2.00 (released March 2017)
+#### Version 2.00 (released March 2017)
  
  Python3 version is available here: https://github.com/sudhof/politeness/tree/python3 (refactored from Version 1.01 through the kindness of Benjamin Meyers). 
  
  Note: This python3 version was not yet tested by us, nor compared against the results from our paper (listed below).  The code used in the paper is still here in the master branch of this repository (keep on reading).
  
  
- Version 1.01 (released October 2014)
+#### Version 1.01 (released October 2014)
 
 Python implementation of a politeness classifier for requests, based on the work described in:
 
