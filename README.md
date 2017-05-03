@@ -9,6 +9,8 @@ The original training data from Stack Exchange and Wikipedia has been included i
 
 For questions regarding the port to Python 3 and the retraining of the classifier, please contact bsm9339@rit.edu (Benjamin Meyers).
 
+Note: This python3 version was not yet tested by us (the authors of the politeness paper listed below), nor compared against the results from our paper.  The code used in the paper is still available in the master branch of this repository: https://github.com/sudhof/politeness
+ 
 #### Version 1.01 (released October 2014)
 
 Python implementation of a politeness classifier for requests, based on the work described in:
