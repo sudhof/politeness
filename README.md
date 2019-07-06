@@ -1,5 +1,9 @@
 Stanford Politeness API
 =======================
+
+#### A new home: ConvoKit (July 2019)
+The functionality of this API is now integrated with [ConvoKit](https://convokit.cornell.edu/). This new implementation more directly exposes politeness strategies, which can used in downstream tasks (see example scripts in ConvoKit).  As such, we are discontinuing support for this API.
+
 #### Version 2.00 (released March 2017)
  
  Python3 version is available here: https://github.com/sudhof/politeness/tree/python3 (refactored from Version 1.01 through the kindness of Benjamin Meyers). 
