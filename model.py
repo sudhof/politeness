@@ -3,6 +3,8 @@ import sys
 import os
 import cPickle
 
+from distutils.version import StrictVersion
+
 """
 This file provides an interface to 
 a pre-trained politeness SVM. 
@@ -43,7 +45,7 @@ except:
 packages2versions = [("scikit-learn", sklearn, "0.15.1"), ("numpy", np, "1.9.0"), ("nltk", nltk, "3.0.0"), ("scipy", scipy, "0.12.0")]
 
 for name, package, expected_v in packages2versions:
-    if package.__version__ < expected_v:
+    if StrictVersion(package.__version__) < StrictVersion(expected_v)
         sys.stderr.write("Warning: package '%s', expected version >= %s, detected %s. Code functionality not guaranteed.\n" % (name, expected_v, package.__version__))
 
 
