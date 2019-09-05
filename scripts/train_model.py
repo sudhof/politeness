@@ -32,7 +32,7 @@ def train_svm(documents, ntesting=500):
 
     returns fitted SVC, which can be serialized using cPickle
     """
-    # Generate and persist list of unigrams, bigrams  
+    # Generate and persist list of unigrams, bigrams
     PolitenessFeatureVectorizer.generate_bow_features(documents)
 
     # For good luck
@@ -66,7 +66,7 @@ def documents2feature_vectors(documents):
         if not fks:
             fks = sorted(fs.keys())
         fv = [fs[f] for f in fks]
-        # If politeness score > 0.0, 
+        # If politeness score > 0.0,
         # the doc is polite, class=1
         l = 1 if d['score'] > 0.0 else 0
         X.append(fv)
